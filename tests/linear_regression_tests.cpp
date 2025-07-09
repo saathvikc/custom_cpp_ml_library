@@ -123,7 +123,7 @@ void test_advanced_configurations(const std::vector<double>& x, const std::vecto
     print_separator("ADVANCED CONFIGURATIONS");
     
     // Configuration 1: High-performance setup
-    std::cout << "🚀 High-Performance Configuration: ";
+    std::cout << " High-Performance Configuration: ";
     LinearRegression model1(0.001, 2000, 1e-10, OptimizerType::ADAM, 
                            RegularizationType::L2, 0.001, true, true);
     model1.set_optimizer(OptimizerType::ADAM, 0.9, 0.999);
@@ -133,7 +133,7 @@ void test_advanced_configurations(const std::vector<double>& x, const std::vecto
     print_model_performance(model1, x, y, "");
     
     // Configuration 2: Robust setup with Elastic Net
-    std::cout << "🛡️  Robust Configuration: ";
+    std::cout << "  Robust Configuration: ";
     LinearRegression model2(0.01, 1500, 1e-8, OptimizerType::ADAM, 
                            RegularizationType::ELASTIC_NET, 0.05, true, true);
     model2.set_regularization(RegularizationType::ELASTIC_NET, 0.05, 0.7);
@@ -217,7 +217,7 @@ void test_edge_cases() {
         
         LinearRegression model_minimal(0.1, 100, 1e-6);
         model_minimal.fit(x_minimal, y_minimal);
-        std::cout << "✅ Minimal data test passed\n";
+        std::cout << " Minimal data test passed\n";
         
         // Test with constant data
         std::vector<double> x_constant = {1, 1, 1, 1, 1};
@@ -225,7 +225,7 @@ void test_edge_cases() {
         
         LinearRegression model_constant(0.1, 100, 1e-6);
         model_constant.fit(x_constant, y_constant);
-        std::cout << "✅ Constant data test passed\n";
+        std::cout << " Constant data test passed\n";
         
         // Test with large values
         std::vector<double> x_large = {1000, 2000, 3000, 4000, 5000};
@@ -234,14 +234,14 @@ void test_edge_cases() {
         LinearRegression model_large(0.0001, 500, 1e-6, OptimizerType::ADAM, 
                                     RegularizationType::NONE, 0.0, true, true);
         model_large.fit(x_large, y_large);
-        std::cout << "✅ Large values test passed\n";
+        std::cout << " Large values test passed\n";
         
         // Test prediction accuracy
         double pred = model_large.predict(6000);
         std::cout << "Large values prediction for x=6000: " << pred << "\n";
         
     } catch (const std::exception& e) {
-        std::cout << "❌ Edge case test failed: " << e.what() << "\n";
+        std::cout << " Edge case test failed: " << e.what() << "\n";
     }
 }
 
@@ -282,23 +282,23 @@ void benchmark_performance(const std::vector<double>& x, const std::vector<doubl
 
 void print_test_summary() {
     print_separator("TEST SUMMARY");
-    std::cout << "🎯 All linear regression tests completed successfully!\n\n";
-    std::cout << "📊 Tests performed:\n";
-    std::cout << "  ✅ Optimizer comparison (SGD, Momentum, AdaGrad, Adam)\n";
-    std::cout << "  ✅ Regularization testing (None, L1, L2, Elastic Net)\n";
-    std::cout << "  ✅ Learning rate analysis\n";
-    std::cout << "  ✅ Feature scaling impact\n";
-    std::cout << "  ✅ Advanced configurations\n";
-    std::cout << "  ✅ Model persistence\n";
-    std::cout << "  ✅ Real-time training\n";
-    std::cout << "  ✅ Edge case handling\n";
-    std::cout << "  ✅ Performance benchmarking\n\n";
-    std::cout << "📁 Check the models/ directory for saved models.\n";
-    std::cout << "🚀 Your linear regression algorithm is production-ready!\n";
+    std::cout << " All linear regression tests completed successfully!\n\n";
+    std::cout << " Tests performed:\n";
+    std::cout << "   Optimizer comparison (SGD, Momentum, AdaGrad, Adam)\n";
+    std::cout << "   Regularization testing (None, L1, L2, Elastic Net)\n";
+    std::cout << "   Learning rate analysis\n";
+    std::cout << "   Feature scaling impact\n";
+    std::cout << "   Advanced configurations\n";
+    std::cout << "   Model persistence\n";
+    std::cout << "   Real-time training\n";
+    std::cout << "   Edge case handling\n";
+    std::cout << "   Performance benchmarking\n\n";
+    std::cout << " Check the models/ directory for saved models.\n";
+    std::cout << " Your linear regression algorithm is production-ready!\n";
 }
 
 void run_all_tests(const std::vector<double>& x, const std::vector<double>& y) {
-    std::cout << "🤖 COMPREHENSIVE LINEAR REGRESSION TEST SUITE\n";
+    std::cout << " COMPREHENSIVE LINEAR REGRESSION TEST SUITE\n";
     std::cout << "Data loaded: " << x.size() << " samples\n";
     
     if (x.size() > 0) {

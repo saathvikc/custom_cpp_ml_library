@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 
-class LinearRegression {
+class LogisticRegression {
 private:
     // Model parameters
     double w, b;
@@ -37,11 +37,11 @@ private:
     // Feature scaling
     bool use_feature_scaling;
     double x_mean, x_std;
-    double y_mean, y_std;
     
     // Training history
     std::vector<double> loss_history;
     std::vector<double> lr_history;
+    std::vector<double> accuracy_history;
     
     // Logging
     bool enable_logging;
@@ -51,43 +51,48 @@ private:
     void initialize_optimizer_state();
     void update_parameters(double dw, double db, int iteration);
     double compute_regularization_loss() const;
-    void scale_features(std::vector<double>& x, std::vector<double>& y);
-    void unscale_predictions(std::vector<double>& predictions) const;
-    double unscale_prediction(double prediction) const;
+    void scale_features(std::vector<double>& x);
+    double sigmoid(double z) const;
+    double compute_accuracy(const std::vector<double>& x, const std::vector<int>& y) const;
 
 public:
     // Constructor with comprehensive parameters
-    LinearRegression(double learning_rate = 0.01, 
-                    int max_epochs = 1000, 
-                    double tol = 1e-6,
-                    OptimizerType opt = OptimizerType::ADAM,
-                    RegularizationType reg = RegularizationType::NONE,
-                    double reg_strength = 0.01,
-                    bool adaptive_lr = true,
-                    bool feature_scaling = true);
+    LogisticRegression(double learning_rate = 0.01, 
+                      int max_epochs = 1000, 
+                      double tol = 1e-6,
+                      OptimizerType opt = OptimizerType::ADAM,
+                      RegularizationType reg = RegularizationType::NONE,
+                      double reg_strength = 0.01,
+                      bool adaptive_lr = true,
+                      bool feature_scaling = true);
     
     // Core training and prediction
-    void fit(const std::vector<double>& x, const std::vector<double>& y);
-    double predict(double x_val) const;
-    std::vector<double> predict(const std::vector<double>& x_vals) const;
+    void fit(const std::vector<double>& x, const std::vector<int>& y);
+    double predict_proba(double x_val) const;
+    int predict(double x_val) const;
+    std::vector<double> predict_proba(const std::vector<double>& x_vals) const;
+    std::vector<int> predict(const std::vector<double>& x_vals) const;
     
     // Evaluation metrics
-    double evaluate(const std::vector<double>& x, const std::vector<double>& y) const;
-    double r_squared(const std::vector<double>& x, const std::vector<double>& y) const;
-    double mean_absolute_error(const std::vector<double>& x, const std::vector<double>& y) const;
+    double evaluate_loss(const std::vector<double>& x, const std::vector<int>& y) const;
+    double evaluate_accuracy(const std::vector<double>& x, const std::vector<int>& y) const;
+    double evaluate_precision(const std::vector<double>& x, const std::vector<int>& y) const;
+    double evaluate_recall(const std::vector<double>& x, const std::vector<int>& y) const;
+    double evaluate_f1_score(const std::vector<double>& x, const std::vector<int>& y) const;
     
     // Getters for model parameters
     double get_weight() const;
     double get_bias() const;
     const std::vector<double>& get_loss_history() const;
     const std::vector<double>& get_lr_history() const;
+    const std::vector<double>& get_accuracy_history() const;
     
     // Hyperparameter setters
     void set_optimizer(OptimizerType opt, double beta1 = 0.9, double beta2 = 0.999);
     void set_regularization(RegularizationType reg, double strength = 0.01, double l1_ratio = 0.5);
     void set_learning_rate_schedule(bool adaptive, double decay = 0.95, double min_lr = 1e-6);
     void set_feature_scaling(bool enable);
-    void set_logging(bool enable, const std::string& filename = "training.log");
+    void set_logging(bool enable, const std::string& filename = "logistic_training.log");
     
     // Model persistence
     void save_model(const std::string& filename) const;

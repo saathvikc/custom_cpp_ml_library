@@ -3,7 +3,7 @@ CXX = g++
 CXXFLAGS = -std=c++17 -O2 -Wall -Wextra
 TARGET = ml_library
 SRCDIR = .
-SOURCES = main.cpp regression/linear_regression.cpp utils/utils.cpp tests/linear_regression_tests.cpp
+SOURCES = main.cpp regression/linear_regression.cpp regression/logistic_regression.cpp utils/utils.cpp tests/linear_regression_tests.cpp tests/logistic_regression_tests.cpp
 
 # Default target
 all: $(TARGET)
@@ -30,6 +30,18 @@ clean-all: clean clean-logs
 # Run the program
 run: setup $(TARGET)
 	./$(TARGET)
+
+# Run only linear regression tests (quick demo + tests)
+run-linear: setup $(TARGET)
+	@echo "Running Linear Regression Demo and Tests..."
+	./$(TARGET) | head -50
+	@echo "Check logs/ directory for detailed training logs"
+
+# Run only logistic regression tests (generate data and test)
+run-logistic: setup $(TARGET)
+	@echo "Running Logistic Regression Demo and Tests..."
+	./$(TARGET) | tail -50
+	@echo "Check logs/ directory for detailed training logs"
 
 # Create necessary directories
 setup:
@@ -67,17 +79,19 @@ uninstall:
 # Help
 help:
 	@echo "Available targets:"
-	@echo "  all       - Build the main executable (default)"
-	@echo "  debug     - Build with debug symbols"
-	@echo "  release   - Build optimized release version"
-	@echo "  clean     - Remove build artifacts"
-	@echo "  clean-all - Remove build artifacts and logs"
-	@echo "  run       - Build and run the program"
-	@echo "  setup     - Create necessary directories"
-	@echo "  logs      - List available log files"
-	@echo "  view-log  - View contents of a specific log file"
-	@echo "  clean-logs- Remove all log files"
-	@echo "  install   - Install to /usr/local/bin"
-	@echo "  help      - Show this help message"
+	@echo "  all         - Build the main executable (default)"
+	@echo "  debug       - Build with debug symbols"
+	@echo "  release     - Build optimized release version"
+	@echo "  clean       - Remove build artifacts"
+	@echo "  clean-all   - Remove build artifacts and logs"
+	@echo "  run         - Build and run the full demo (linear + logistic)"
+	@echo "  run-linear  - Run linear regression demo only"
+	@echo "  run-logistic- Run logistic regression demo only"
+	@echo "  setup       - Create necessary directories"
+	@echo "  logs        - List available log files"
+	@echo "  view-log    - View contents of a specific log file"
+	@echo "  clean-logs  - Remove all log files"
+	@echo "  install     - Install to /usr/local/bin"
+	@echo "  help        - Show this help message"
 
-.PHONY: all debug release clean clean-all run setup logs view-log clean-logs install uninstall help
+.PHONY: all debug release clean clean-all run run-linear run-logistic setup logs view-log clean-logs install uninstall help
