@@ -1,5 +1,7 @@
 models/
 data/
+logs/
 .vscode/
 main
 .DS_Store
+ml_library

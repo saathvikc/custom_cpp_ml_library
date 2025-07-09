@@ -1,0 +1,83 @@
+# Makefile for Custom C++ ML Library
+CXX = g++
+CXXFLAGS = -std=c++17 -O2 -Wall -Wextra
+TARGET = ml_library
+SRCDIR = .
+SOURCES = main.cpp regression/linear_regression.cpp utils/utils.cpp tests/linear_regression_tests.cpp
+
+# Default target
+all: $(TARGET)
+
+# Build the main executable
+$(TARGET): $(SOURCES)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(SOURCES)
+
+# Debug build with debugging symbols
+debug: CXXFLAGS += -g -DDEBUG
+debug: $(TARGET)
+
+# Release build with optimizations
+release: CXXFLAGS += -O3 -DNDEBUG
+release: $(TARGET)
+
+# Clean build artifacts
+clean:
+	rm -f $(TARGET)
+
+# Clean everything including logs
+clean-all: clean clean-logs
+
+# Run the program
+run: setup $(TARGET)
+	./$(TARGET)
+
+# Create necessary directories
+setup:
+	mkdir -p models data logs
+
+# View latest training logs
+logs:
+	@echo "Recent log files:"
+	@ls -la logs/ 2>/dev/null || echo "No logs directory found. Run 'make setup' first."
+
+# View specific log file
+view-log:
+	@read -p "Enter log filename (without .log extension): " logname; \
+	if [ -f "logs/$$logname.log" ]; then \
+		echo "=== Contents of logs/$$logname.log ==="; \
+		cat "logs/$$logname.log"; \
+	else \
+		echo "Log file logs/$$logname.log not found."; \
+		echo "Available logs:"; \
+		ls logs/ 2>/dev/null || echo "No logs found."; \
+	fi
+
+# Clean logs
+clean-logs:
+	rm -rf logs/*.log
+
+# Install (copy to /usr/local/bin)
+install: $(TARGET)
+	cp $(TARGET) /usr/local/bin/
+
+# Uninstall
+uninstall:
+	rm -f /usr/local/bin/$(TARGET)
+
+# Help
+help:
+	@echo "Available targets:"
+	@echo "  all       - Build the main executable (default)"
+	@echo "  debug     - Build with debug symbols"
+	@echo "  release   - Build optimized release version"
+	@echo "  clean     - Remove build artifacts"
+	@echo "  clean-all - Remove build artifacts and logs"
+	@echo "  run       - Build and run the program"
+	@echo "  setup     - Create necessary directories"
+	@echo "  logs      - List available log files"
+	@echo "  view-log  - View contents of a specific log file"
+	@echo "  clean-logs- Remove all log files"
+	@echo "  install   - Install to /usr/local/bin"
+	@echo "  help      - Show this help message"
+
+.PHONY: all debug release clean clean-all run setup logs view-log clean-logs install uninstall help
