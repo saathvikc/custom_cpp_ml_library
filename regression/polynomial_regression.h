@@ -1,5 +1,6 @@
 #pragma once
 #include "regression.h"
+#include "../utils/log_manager.h"
 #include <vector>
 #include <string>
 
@@ -45,7 +46,7 @@ private:
     
     // Logging
     bool enable_logging;
-    std::string log_filename;
+    std::string data_name;  // Name of dataset for logging organization
     
     // Internal methods
     void initialize_optimizer_state();
@@ -90,7 +91,7 @@ public:
     void set_regularization(RegularizationType reg, double strength = 0.01, double l1_ratio = 0.5);
     void set_learning_rate_schedule(bool adaptive, double decay = 0.95, double min_lr = 1e-6);
     void set_feature_scaling(bool enable);
-    void set_logging(bool enable, const std::string& filename = "polynomial_training.log");
+    void set_logging(bool enable, const std::string& dataset_name = "default");
     
     // Model persistence
     void save_model(const std::string& filename) const;

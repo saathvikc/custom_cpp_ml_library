@@ -1,4 +1,5 @@
 #include "logistic_regression.h"
+#include "../utils/log_manager.h"
 #include <iostream>
 #include <fstream>
 #include <cmath>
@@ -16,7 +17,7 @@ LogisticRegression::LogisticRegression(double learning_rate, int max_epochs, dou
       reg_type(reg), lambda_reg(reg_strength), l1_ratio(0.5),
       use_adaptive_lr(adaptive_lr), lr_decay(0.95), min_lr(1e-6),
       use_feature_scaling(feature_scaling), x_mean(0.0), x_std(1.0),
-      enable_logging(false), log_filename("logistic_training.log") {
+      enable_logging(false), data_name("default") {
     
     initialize_optimizer_state();
 }
@@ -205,11 +206,13 @@ void LogisticRegression::fit(const std::vector<double>& x, const std::vector<int
     
     // Open log file if logging is enabled
     std::ofstream log_file;
+    std::string log_path;
     if (enable_logging) {
-        log_file.open(log_filename, std::ios::app);
+        log_path = LogManager::generate_log_path("logistic_regression", data_name, "training");
+        log_file.open(log_path, std::ios::app);
         if (log_file.is_open()) {
-            log_file << "\n" << std::string(80, '=') << "\n";
-            log_file << "NEW LOGISTIC REGRESSION TRAINING - " << n << " samples\n";
+            log_file << LogManager::create_session_header("Logistic Regression", 
+                                                         "Training on " + std::to_string(n) + " samples");
             log_file << "Optimizer: ";
             switch (optimizer) {
                 case OptimizerType::SGD: log_file << "SGD"; break;
@@ -329,7 +332,7 @@ void LogisticRegression::fit(const std::vector<double>& x, const std::vector<int
     // Console shows only summary
     std::cout << "✅ Training completed - " << loss_history.size() << " epochs";
     if (enable_logging) {
-        std::cout << " (detailed logs in " << log_filename << ")";
+        std::cout << " (detailed logs in " << log_path << ")";
     }
     std::cout << std::endl;
 }
@@ -456,9 +459,9 @@ void LogisticRegression::set_feature_scaling(bool enable) {
     use_feature_scaling = enable;
 }
 
-void LogisticRegression::set_logging(bool enable, const std::string& filename) {
+void LogisticRegression::set_logging(bool enable, const std::string& dataset_name) {
     enable_logging = enable;
-    log_filename = filename;
+    data_name = dataset_name;
 }
 
 void LogisticRegression::save_model(const std::string& filename) const {

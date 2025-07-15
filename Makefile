@@ -3,7 +3,7 @@ CXX = g++
 CXXFLAGS = -std=c++17 -O2 -Wall -Wextra
 TARGET = ml_library
 SRCDIR = .
-SOURCES = main.cpp regression/linear_regression.cpp regression/logistic_regression.cpp regression/polynomial_regression.cpp utils/utils.cpp tests/linear_regression_tests.cpp tests/logistic_regression_tests.cpp tests/polynomial_regression_tests.cpp
+SOURCES = main.cpp regression/linear_regression.cpp regression/logistic_regression.cpp regression/polynomial_regression.cpp classification/knn.cpp utils/utils.cpp utils/log_manager.cpp tests/linear_regression_tests.cpp tests/logistic_regression_tests.cpp tests/polynomial_regression_tests.cpp tests/knn_tests.cpp
 
 # Default target
 all: $(TARGET)

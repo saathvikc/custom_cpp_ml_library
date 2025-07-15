@@ -1,5 +1,6 @@
 #pragma once
 #include "../regression/regression.h"
+#include "../utils/log_manager.h"
 #include <vector>
 #include <string>
 #include <utility>
@@ -43,7 +44,7 @@ private:
     
     // Logging
     bool enable_logging;
-    std::string log_filename;
+    std::string data_name;  // Name of dataset for logging organization
     
     // Internal methods
     double calculate_distance(const std::vector<double>& point1, 
@@ -107,7 +108,7 @@ public:
     void set_distance_metric(DistanceMetric metric, double p = 2.0);
     void set_weighting_method(WeightingMethod weighting, double sigma = 1.0);
     void set_feature_scaling(bool enable);
-    void set_logging(bool enable, const std::string& filename = "knn_training.log");
+    void set_logging(bool enable, const std::string& dataset_name = "default");
     void set_optimization_params(bool use_tree = false, int leaf_sz = 30);
     
     // Model persistence

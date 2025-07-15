@@ -47,7 +47,7 @@ void test_optimizers(const std::vector<double>& x, const std::vector<double>& y)
         
         LinearRegression model(0.01, 1000, 1e-8, optimizers[i], 
                               RegularizationType::NONE, 0.0, true, true);
-        model.set_logging(true, "logs/optimizer_" + std::to_string(i) + ".log");
+        model.set_logging(true, "optimizer_test_" + std::to_string(i));
         model.fit(x, y);
         
         auto end = std::chrono::high_resolution_clock::now();
@@ -78,7 +78,7 @@ void test_regularization(const std::vector<double>& x, const std::vector<double>
     for (size_t i = 0; i < reg_types.size(); ++i) {
         LinearRegression model(0.01, 1000, 1e-8, OptimizerType::ADAM, 
                               reg_types[i], 0.1, true, true);
-        model.set_logging(true, "logs/regularization_" + std::to_string(i) + ".log");
+        model.set_logging(true, "regularization_test_" + std::to_string(i));
         model.fit(x, y);
         print_model_performance(model, x, y, reg_names[i]);
     }
@@ -95,7 +95,7 @@ void test_learning_rates(const std::vector<double>& x, const std::vector<double>
         
         LinearRegression model(lr, 1000, 1e-8, OptimizerType::ADAM, 
                               RegularizationType::L2, 0.01, true, true);
-        model.set_logging(true, "logs/learning_rate_" + std::to_string(i) + ".log");
+        model.set_logging(true, "learning_rate_test_" + std::to_string(i));
         model.fit(x, y);
         print_model_performance(model, x, y, config_name);
     }
@@ -107,14 +107,14 @@ void test_feature_scaling(const std::vector<double>& x, const std::vector<double
     // Without feature scaling
     LinearRegression model_no_scaling(0.01, 1000, 1e-8, OptimizerType::ADAM, 
                                      RegularizationType::NONE, 0.0, false, false);
-    model_no_scaling.set_logging(true, "logs/no_scaling.log");
+    model_no_scaling.set_logging(true, "feature_scaling_test");
     model_no_scaling.fit(x, y);
     print_model_performance(model_no_scaling, x, y, "Without Feature Scaling");
     
     // With feature scaling
     LinearRegression model_with_scaling(0.01, 1000, 1e-8, OptimizerType::ADAM, 
                                        RegularizationType::NONE, 0.0, false, true);
-    model_with_scaling.set_logging(true, "logs/with_scaling.log");
+    model_with_scaling.set_logging(true, "feature_scaling_test");
     model_with_scaling.fit(x, y);
     print_model_performance(model_with_scaling, x, y, "With Feature Scaling");
 }
@@ -128,7 +128,7 @@ void test_advanced_configurations(const std::vector<double>& x, const std::vecto
                            RegularizationType::L2, 0.001, true, true);
     model1.set_optimizer(OptimizerType::ADAM, 0.9, 0.999);
     model1.set_learning_rate_schedule(true, 0.95, 1e-6);
-    model1.set_logging(true, "logs/high_performance.log");
+    model1.set_logging(true, "advanced_config_test");
     model1.fit(x, y);
     print_model_performance(model1, x, y, "");
     
@@ -137,7 +137,7 @@ void test_advanced_configurations(const std::vector<double>& x, const std::vecto
     LinearRegression model2(0.01, 1500, 1e-8, OptimizerType::ADAM, 
                            RegularizationType::ELASTIC_NET, 0.05, true, true);
     model2.set_regularization(RegularizationType::ELASTIC_NET, 0.05, 0.7);
-    model2.set_logging(true, "logs/robust.log");
+    model2.set_logging(true, "advanced_config_test");
     model2.fit(x, y);
     print_model_performance(model2, x, y, "");
     
@@ -145,7 +145,7 @@ void test_advanced_configurations(const std::vector<double>& x, const std::vecto
     std::cout << "⚡ Fast Convergence Configuration: ";
     LinearRegression model3(0.1, 500, 1e-6, OptimizerType::MOMENTUM, 
                            RegularizationType::L1, 0.01, true, true);
-    model3.set_logging(true, "logs/fast_convergence.log");
+    model3.set_logging(true, "advanced_config_test");
     model3.fit(x, y);
     print_model_performance(model3, x, y, "");
 }
@@ -160,7 +160,7 @@ void test_model_persistence() {
     // Train original model
     LinearRegression original_model(0.01, 1000, 1e-8, OptimizerType::ADAM, 
                                    RegularizationType::L2, 0.01, true, true);
-    original_model.set_logging(true, "logs/model_persistence.log");
+    original_model.set_logging(true, "model_persistence_test");
     original_model.fit(x_synthetic, y_synthetic);
     
     std::cout << "Original model trained and saved to models/advanced_model.txt\n";
@@ -190,7 +190,7 @@ void demonstrate_real_time_training(const std::vector<double>& x, const std::vec
     
     LinearRegression model(0.01, 1000, 1e-8, OptimizerType::ADAM, 
                           RegularizationType::L2, 0.01, true, true);
-    model.set_logging(true, "logs/realtime_training.log");
+    model.set_logging(true, "realtime_training_test");
     
     // This will show detailed training progress in log file
     model.fit(x, y);
@@ -265,7 +265,7 @@ void benchmark_performance(const std::vector<double>& x, const std::vector<doubl
         
         LinearRegression model(0.01, 2000, 1e-10, opt.second, 
                               RegularizationType::L2, 0.01, true, true);
-        model.set_logging(true, "logs/benchmark_" + opt.first + ".log");
+        model.set_logging(true, "benchmark_" + opt.first);
         model.fit(x, y);
         
         auto end = std::chrono::high_resolution_clock::now();

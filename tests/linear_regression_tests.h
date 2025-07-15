@@ -1,5 +1,6 @@
 #pragma once
 #include "../regression/linear_regression.h"
+#include "../utils/log_manager.h"
 #include <vector>
 #include <string>
 

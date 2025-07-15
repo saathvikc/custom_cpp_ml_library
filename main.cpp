@@ -1,10 +1,12 @@
 #include "regression/linear_regression.h"
 #include "regression/logistic_regression.h"
 #include "regression/polynomial_regression.h"
+#include "classification/knn.h"
 #include "utils/utils.h"
 #include "tests/linear_regression_tests.h"
 #include "tests/logistic_regression_tests.h"
 #include "tests/polynomial_regression_tests.h"
+#include "tests/knn_tests.h"
 #include <iostream>
 #include <vector>
 
