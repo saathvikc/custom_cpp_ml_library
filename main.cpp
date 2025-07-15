@@ -1,14 +1,16 @@
 #include "regression/linear_regression.h"
 #include "regression/logistic_regression.h"
+#include "regression/polynomial_regression.h"
 #include "utils/utils.h"
 #include "tests/linear_regression_tests.h"
 #include "tests/logistic_regression_tests.h"
+#include "tests/polynomial_regression_tests.h"
 #include <iostream>
 #include <vector>
 
 int main() {
     try {
-        std::cout << "CUSTOM C++ ML LIBRARY - ADVANCED REGRESSION SUITE\n";
+        std::cout << "CUSTOM C++ ML LIBRARY - ADVANCED MACHINE LEARNING SUITE\n";
         std::cout << std::string(60, '=') << "\n\n";
         
         // Load data for linear regression
@@ -47,6 +49,39 @@ int main() {
             double test_x = x[x.size()/2]; // Middle value
             double prediction = demo_model.predict(test_x);
             std::cout << "Prediction for x=" << test_x << ": " << prediction << "\n";
+        }
+        
+        // POLYNOMIAL REGRESSION DEMO
+        std::cout << "\n" << std::string(40, '-') << "\n";
+        std::cout << "POLYNOMIAL REGRESSION DEMO\n";
+        std::cout << std::string(40, '-') << "\n";
+        
+        // Generate polynomial data for demo
+        std::vector<double> x_poly, y_poly;
+        PolynomialRegressionTests::generate_polynomial_data(x_poly, y_poly, 3, 50, 0.1);
+        
+        std::cout << "Generated " << x_poly.size() << " samples for polynomial demo\n";
+        
+        PolynomialRegression poly_demo(3, 0.01, 1000, 1e-6, OptimizerType::ADAM, 
+                                      RegularizationType::L2, 0.01, true, true);
+        poly_demo.set_logging(true, "logs/demo_polynomial_training.log");
+        poly_demo.fit(x_poly, y_poly);
+        
+        std::cout << "\nPolynomial Regression Demo Results:\n";
+        poly_demo.print_polynomial_equation();
+        std::cout << "R² Score: " << poly_demo.r_squared(x_poly, y_poly) << "\n";
+        std::cout << "Adjusted R² Score: " << poly_demo.adjusted_r_squared(x_poly, y_poly) << "\n";
+        std::cout << "MSE: " << poly_demo.evaluate(x_poly, y_poly) << "\n";
+        
+        // Save polynomial demo model
+        poly_demo.save_model("models/demo_polynomial_model.txt");
+        std::cout << "Polynomial demo model saved to models/demo_polynomial_model.txt\n";
+        
+        // Quick polynomial prediction test
+        if (x_poly.size() > 2) {
+            double test_x = x_poly[x_poly.size()/2];
+            double prediction = poly_demo.predict(test_x);
+            std::cout << "Polynomial prediction for x=" << test_x << ": " << prediction << "\n";
         }
         
         // LOGISTIC REGRESSION DEMO
@@ -95,6 +130,9 @@ int main() {
         // Run comprehensive tests
         std::cout << "\nRunning Linear Regression Test Suite...\n";
         LinearRegressionTests::run_all_tests(x, y);
+        
+        std::cout << "\nRunning Polynomial Regression Test Suite...\n";
+        PolynomialRegressionTests::run_all_tests(x_poly, y_poly);
         
         std::cout << "\nRunning Logistic Regression Test Suite...\n";
         LogisticRegressionTests::run_all_tests(x_class, y_class);
